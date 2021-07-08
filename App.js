@@ -8,12 +8,16 @@ import {
   PermissionsAndroid,
   View,
   TouchableHighlight,
+  NativeModules,
 } from 'react-native';
 
 import Contacts from 'react-native-contacts';
 import AsyncStorage from '@react-native-community/async-storage';
+//import SystemSetting from 'react-native-system-setting';
 
 import DetailView from './components/detailView';
+
+const {UnMuteModule} = NativeModules;
 
 const App = () => {
   const [allContacts, setAllContacts] = useState([]);
@@ -33,6 +37,13 @@ const App = () => {
           'This app requires your permission to access contacts and calling',
       },
     ).then(() => {
+      UnMuteModule.tryGettingAccess();
+      if (UnMuteModule.isMuted()) {
+        console.log('phone is muted, unmuting');
+        UnMuteModule.unMute();
+      } else {
+        console.log('phone not muted');
+      }
       loadContacts();
     });
   }, []);
