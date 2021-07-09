@@ -196,6 +196,8 @@ dependencies {
 
     implementation project(':react-native-contacts')
 
+    implementation project(':react-native-call-log')
+
     compile project(':react-native-system-setting')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

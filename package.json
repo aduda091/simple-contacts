@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "build": "react-native run-android --variant=release"
+    "build": "react-native run-android --variant=release",
+    "link": "react-native link"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",

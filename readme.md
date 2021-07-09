@@ -4,7 +4,9 @@ A simple contacts list/detail app with very large font sizes, designed to be use
 
 ## For Android development
 
-After `npm install`, run `npm run android`
+After `npm install`, run `npm run android`.
+
+Note: any packages linked via `react-native link` (or `npm run link`) won't show in Git changelog, no need to embarrass yourself like me and add them to MainApplication.java
 
 ## To install on real Android device
 

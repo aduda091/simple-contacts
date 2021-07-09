@@ -9,13 +9,15 @@ import {
   View,
   TouchableHighlight,
   NativeModules,
+  Button,
 } from 'react-native';
 
 import Contacts from 'react-native-contacts';
 import AsyncStorage from '@react-native-community/async-storage';
-//import SystemSetting from 'react-native-system-setting';
+import CallLogs from 'react-native-call-log';
 
 import DetailView from './components/detailView';
+import CallLogView from './components/CallLogView';
 
 const {UnMuteModule} = NativeModules;
 
@@ -23,18 +25,21 @@ const App = () => {
   const [allContacts, setAllContacts] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [activeContact, setActiveContact] = useState(null);
+  const [callLogs, setCallLogs] = useState([]);
   const [isContactsModalVisible, setIsContactsModalVisible] = useState(false);
+  const [isCallLogModalVisible, setIsCallLogModalVisible] = useState(false);
 
   useEffect(() => {
     PermissionsAndroid.requestMultiple(
       [
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
         PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+        PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
       ],
       {
         title: 'SimpleContacts',
         message:
-          'This app requires your permission to access contacts and calling',
+          'This app requires your permission to access contacts, call log and calling',
       },
     ).then(() => {
       UnMuteModule.tryGettingAccess();
@@ -45,6 +50,13 @@ const App = () => {
         console.log('phone not muted');
       }
       loadContacts();
+      CallLogs.load(20).then(logs => {
+        // only find last 20 calls and show last 5 missed ones
+        const missedCalls = logs
+          .filter(log => log.type === 'MISSED')
+          .slice(0, 5);
+        setCallLogs(missedCalls);
+      });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -113,6 +125,14 @@ const App = () => {
     setIsContactsModalVisible(false);
   }
 
+  function openCallLog() {
+    setIsCallLogModalVisible(true);
+  }
+
+  function closeCallLog() {
+    setIsCallLogModalVisible(false);
+  }
+
   return (
     <>
       <StatusBar barStyle="light-content" />
@@ -121,6 +141,12 @@ const App = () => {
         contact={activeContact}
         onClose={closeDetailView}
         onFavoriteChange={loadContacts}
+      />
+      <CallLogView
+        isVisible={isCallLogModalVisible}
+        logs={callLogs}
+        contacts={allContacts}
+        onClose={closeCallLog}
       />
       <SafeAreaView>
         <ScrollView
@@ -132,6 +158,14 @@ const App = () => {
           <Text style={styles.sectionTitle}>All contacts</Text>
           {renderContacts(allContacts)}
         </ScrollView>
+
+        {callLogs.length ? (
+          <View style={styles.callLogBtnContainer}>
+            <Button title="Call log" onPress={openCallLog} color="brown" />
+          </View>
+        ) : (
+          undefined
+        )}
       </SafeAreaView>
     </>
   );
@@ -156,6 +190,14 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 2,
     textAlign: 'center',
+  },
+  callLogBtnContainer: {
+    padding: 10,
+    marginTop: 20,
+    marginHorizontal: 10,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
 });
 
