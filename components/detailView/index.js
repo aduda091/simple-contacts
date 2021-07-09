@@ -78,8 +78,16 @@ const DetailView = props => {
           underlayColor="cyan"
           onLongPress={toggleFavoriteStatus}>
           <View style={styles.contactNameContainer}>
-            <Text style={styles.contactFont}>{contact.givenName}</Text>
-            <Text style={styles.contactFont}>{contact.familyName}</Text>
+            {contact.givenName ? (
+              <Text style={styles.contactFont}>{contact.givenName}</Text>
+            ) : (
+              undefined
+            )}
+            {contact.familyName ? (
+              <Text style={styles.contactFont}>{contact.familyName}</Text>
+            ) : (
+              undefined
+            )}
           </View>
         </TouchableHighlight>
         <ScrollView style={styles.numbersContainer}>

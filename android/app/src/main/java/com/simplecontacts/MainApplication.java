@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.ninty.system.setting.SystemSettingPackage;
+import com.wscodelabs.callLogs.CallLogPackage;
 import com.simplecontacts.customModules.MyAppPackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new ReactNativeContacts());
           // packages.add(new SystemSettingPackage());
+          // packages.add(new CallLogPackage());
           packages.add(new MyAppPackage());
           return packages;
         }
