@@ -23,7 +23,7 @@ const App = () => {
   const [allContacts, setAllContacts] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [activeContact, setActiveContact] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isContactsModalVisible, setIsContactsModalVisible] = useState(false);
 
   useEffect(() => {
     PermissionsAndroid.requestMultiple(
@@ -46,6 +46,7 @@ const App = () => {
       }
       loadContacts();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function loadContacts() {
@@ -104,19 +105,19 @@ const App = () => {
 
   function onContactPress(contact) {
     setActiveContact(contact);
-    setIsModalVisible(true);
+    setIsContactsModalVisible(true);
   }
 
   function closeDetailView() {
     setActiveContact(null);
-    setIsModalVisible(false);
+    setIsContactsModalVisible(false);
   }
 
   return (
     <>
       <StatusBar barStyle="light-content" />
       <DetailView
-        isVisible={isModalVisible}
+        isVisible={isContactsModalVisible}
         contact={activeContact}
         onClose={closeDetailView}
         onFavoriteChange={loadContacts}
