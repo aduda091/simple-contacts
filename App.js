@@ -67,8 +67,10 @@ const App = () => {
         console.warn('Permission to access contacts was denied');
       } else {
         const sortedContacts = contacts.sort((a, b) => {
-          const nameA = a.givenName.toUpperCase();
-          const nameB = b.givenName.toUpperCase();
+          const nameA =
+            a.givenName?.toUpperCase() ?? a.displayName?.toUpperCase();
+          const nameB =
+            b.givenName?.toUpperCase() ?? b.displayName?.toUpperCase();
           return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
         });
 
